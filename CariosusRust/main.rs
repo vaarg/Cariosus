@@ -35,6 +35,7 @@ impl Users {
 
 fn login(users: Users) {
     
+    println!("\nPlease login:\n");
     print!("Enter username: ");
     io::stdout().flush().unwrap();
     let mut username = String::new();
@@ -53,6 +54,9 @@ fn login(users: Users) {
 
     if users.check_login(username.to_string(), password.to_string()) {
         println!("Welcome {username}!");
+        if username == "Admin" {
+            println!("!FLAG!");
+        }
     } else {
         println!("Invalid login!");
     }
@@ -106,7 +110,6 @@ fn main() {
     
     let mut users = Users::new();
     users.join(User {id: id, username: "Admin".to_string(), password: "Admin".to_string(), administrator: true});
-
 
     print!("\nWelcome to Cariosus Corp!\n\nWould you like to:\n[1] Login\n[2] Register\n\nEnter option [1] or [2]: ");
     io::stdout().flush().unwrap();
