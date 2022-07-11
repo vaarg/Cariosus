@@ -98,34 +98,38 @@ fn register(mut users: Users, id: u64) {
     let id = id + 1;
 
     users.join(User {id: id, username: username.to_string(), password: password.to_string(), administrator: false});
-    // println!("Found {:?} entries", users.store.len());
-    // assert_eq!(2, users.store.len())
     login(users);
 
 }
 
 fn main() {
     
-    let id = 1;
-    
     let mut users = Users::new();
+    let id = 1;
     users.join(User {id: id, username: "Admin".to_string(), password: "Admin".to_string(), administrator: true});
 
-    print!("\nWelcome to Cariosus Corp!\n\nWould you like to:\n[1] Login\n[2] Register\n\nEnter option [1] or [2]: ");
-    io::stdout().flush().unwrap();
-    let mut option = String::new();
-    io::stdin()
-        .read_line(&mut option)
-        .expect("Option error!");
-    let option = option.trim();
+    println!("\nWelcome to Cariosus Corp!");
 
+    let option = loop {
+        print!("\nWould you like to:\n  [1] Login\n  [2] Register\n\nEnter option [1] or [2]: ");
+        io::stdout().flush().unwrap();
+        let mut option = String::new();
+        io::stdin()
+            .read_line(&mut option)
+            .expect("Option error!");
+        if option == "1\n" || option =="2\n" {
+            break option;
+        } else {
+            println!("\nInvalid option!");
+            continue;
+        }
+    };
+    
+    let option = option.trim();
     if option == "1" {
         login(users);
     } else if option == "2" {
         register(users, id);
-        // login(users);
-    } else {
-        println!("Invalid option!");
     }
 
 }
