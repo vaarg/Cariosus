@@ -62,10 +62,14 @@ fn login(users: Users) {
         .expect("Option error!");
     let password = password.trim();
 
-    if users.check_login(username.to_string(), password.to_string()) {
+    let users_test = users.clone();
+
+    if users_test.check_login(username.to_string(), password.to_string()) {
         println!("Welcome {username}!");
         if username == "Admin" {
             println!("!FLAG!");
+        } else {
+            notes(users);
         }
     } else {
         println!("\nInvalid login!");
