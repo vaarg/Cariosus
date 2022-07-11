@@ -4,6 +4,7 @@ use std::io::Write;
 
 #[allow(dead_code)]
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct User {
     id: u64,
     username: String,
@@ -11,6 +12,7 @@ pub struct User {
     administrator: bool,
 }
 
+#[derive(Clone)]
 pub struct Users {
     store: HashMap<String, User>,
 }
@@ -30,6 +32,14 @@ impl Users {
         } else {
             false
         }
+    }
+
+    pub fn check_user_exist(self, username: String) -> bool {
+        if let Some(u) = self.store.get(username.as_str()) {
+            true
+        } else {
+            false
+        }        
     }
 }
 
@@ -58,18 +68,35 @@ fn login(users: Users) {
             println!("!FLAG!");
         }
     } else {
-        println!("Invalid login!");
+        println!("\nInvalid login!");
+        main();
     }
+}
+
+fn notes (users: Users) {
+    //placeholder
 }
 
 fn register(mut users: Users, id: u64) {
     
-    print!("Enter username: ");
-    io::stdout().flush().unwrap();
-    let mut username = String:: new();
-    io::stdin()
-        .read_line(&mut username)
-        .expect("Username error.");
+    let username: String = loop {
+        print!("Enter username: ");
+        io::stdout().flush().unwrap();
+        let mut username = String:: new();
+        io::stdin()
+            .read_line(&mut username)
+            .expect("Username error.");
+        let username = username.trim();
+        let users_test = users.clone();
+
+        if users_test.check_user_exist(username.to_string()) {
+            println!("Username is already taken!");
+            continue;
+        } else {
+            let username = username.to_string();
+            break username;
+        }
+    };
     let username = username.trim();
     
     let password = loop {
